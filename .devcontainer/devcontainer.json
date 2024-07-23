@@ -5,9 +5,7 @@
   "workspaceFolder": "/home/bun/app",
   "shutdownAction": "stopCompose",
   "remoteUser": "bun",
-  "mounts": [
-    "source=${env:HOME}/home/bun/.ssh,target=/.ssh,type=bind,consistency=cached,readonly"
-  ],
+  "mounts": ["source=${env:HOME}/home/bun/.ssh,target=/.ssh,type=bind,consistency=cached,readonly"],
   "features": {
     "ghcr.io/devcontainers/features/git:1": {},
     "ghcr.io/devcontainers/features/common-utils:2": {
@@ -19,7 +17,8 @@
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
       "moby": false,
       "dockerDashComposeVersion": "v2"
-    }
+    },
+    "ghcr.io/dhoeric/features/act:1": {}
   },
   "postAttachCommand": "/bin/sh .devcontainer/postAttachCommand.sh",
   "postCreateCommand": "/bin/sh .devcontainer/postCreateCommand.sh",
