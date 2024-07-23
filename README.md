@@ -4,6 +4,39 @@ StripeからのWebhookを受け取ってCloudflare KVに保存します.
 
 `client_reference_id`に`discord_user_id`が含めることでDiscordとの連携が可能になります.
 
+## 要件
+
+- VSCode
+- Docker(Docker Desktop推奨)
+
+DevContainerの拡張機能をします.
+
+### 環境変数
+
+- `STRIPE_WEBHOOK_SECRET`
+- `STRIPE_SECRET_KEY`
+
+Stripeの開発者用ダッシュボードからWebhookの署名シークレットである`STRIPE_WEBHOOK_SECRET`とAPIキーのシークレットである`STRIPE_SECRET_KEY`をコピーして設定します.
+
+#### 開発環境
+
+```zsh
+cp .dev.vars.example .dev.vars
+```
+
+開発環境のシークレットは.dev.varsに保存します.
+
+本番環境のシークレットを保存してはいけません.
+
+#### 本番環境
+
+`wrangler`を利用して環境変数を設定します.
+
+```zsh
+bun wrangler secret put STRIPE_WEBHOOK_SECRET
+bun wrangler secret put STRIPE_SECRET_KEY
+```
+
 ### 対応Webhhook
 
 - [ ] checkout.session.completed
@@ -24,7 +57,9 @@ StripeからのWebhookを受け取ってCloudflare KVに保存します.
 
 ### フォーマット
 
-以下の形式でJSONフォーマットとして保存されます
+以下の形式でJSONフォーマットとして保存されます.
+
+サブスクリプション以外の支払いには現在対応していません.
 
 ```json
 {
