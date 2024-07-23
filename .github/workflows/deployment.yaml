@@ -26,4 +26,4 @@ jobs:
         run: |
           ENVIRONMENT=${{ github.event.pull_request.base.ref == 'master' && 'production' || 'development' }}
           DRY_RUN_FLAG=${{ env.IS_ACT_RUN && '--dry-run' || '' }}
-          bun wrangler deploy --minify src/index.ts $DRY_RUN_FLAG
+          bun wrangler deploy --minify src/index.ts $DRY_RUN_FLAG --env $ENVIRONMENT
