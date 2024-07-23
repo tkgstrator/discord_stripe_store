@@ -3,6 +3,8 @@ on:
   pull_request:
     types: [opened, reopened, ready_for_review]
   issue_comment:
+    types: [created, edited]
+  workflow_dispatch:
 jobs:
   pr_agent_job:
     name: Code review
@@ -26,3 +28,7 @@ jobs:
           PR_DESCRIPTION.EXTRA_INSTRUCTIONS: 'Please use Japanese in descriptions. Titles should have prefix of commitlint pattern such as `feat:`, `fix:`, `perf:`, `refactor:`, `test:`, `chore:`, `ci:`, `docs:` etc'
           PR_DESCRIPTION.USE_DESCRIPTION_MARKERS: true
           CONFIG.MODEL: gpt-4o-mini
+          github_action.auto_review: true
+          github_action.auto_describe: true
+          github_action.auto_improve: true
+          github_action.pr_description.use_description_markers: true
