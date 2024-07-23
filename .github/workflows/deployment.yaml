@@ -1,0 +1,29 @@
+name: Deploy to Cloudflare Workers
+on:
+  pull_request:
+    branches:
+      - develop
+      - master
+    types: [closed]
+jobs:
+  deploy:
+    name: Deploy workers
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+      - name: Install dependencies
+        run: |
+          bun install --frozen-lockfile
+      - name: Wrangler deploy
+        env:
+          IS_ACT_RUN: ${{ github.event.pull_request.head.user.login == 'act' }}
+        run: |
+          ENVIRONMENT=${{ github.event.pull_request.base.ref == 'master' && 'production' || 'development' }}
+          DRY_RUN_FLAG=${{ env.IS_ACT_RUN && '--dry-run' || '' }}
+          bun wrangler deploy --minify src/index.ts $DRY_RUN_FLAG --env $ENVIRONMENT
