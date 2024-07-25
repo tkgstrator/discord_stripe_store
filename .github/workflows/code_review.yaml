@@ -1,7 +1,7 @@
 name: Pull request code review by ChatGPT
 on:
   pull_request:
-    types: [opened, reopened, ready_for_review]
+    types: [opened, reopened, ready_for_review, synchronize]
   issue_comment:
     types: [created, edited]
   workflow_dispatch:
