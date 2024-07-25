@@ -5,19 +5,22 @@ export namespace User {
   export const Param = z.object({
     id: z
       .string()
-      .regex(/\d.*/)
+      .pipe(z.coerce.bigint().positive())
       .openapi({
+        type: 'integer',
+        example: '383683302801932289',
+        description: 'Discord user Id',
         param: {
           name: 'id',
           in: 'path'
-        },
-        example: '383683302801932289'
+        }
       })
   })
 
   export const Data = z
     .object({
-      discord_user_id: z.string().regex(/\d.*/).openapi({
+      discord_user_id: z.string().openapi({
+        type: 'string',
         example: '383683302801932289'
       }),
       customer_id: z.nullable(
@@ -28,4 +31,21 @@ export namespace User {
       subscription: z.nullable(z.array(Subscription.Data).nonempty())
     })
     .openapi('User')
+
+  export namespace Checkout {
+    export const Param = z.object({
+      id: z
+        .string()
+        .pipe(z.coerce.bigint().positive())
+        .openapi({
+          type: 'integer',
+          example: '383683302801932289',
+          description: 'Discord user Id',
+          param: {
+            name: 'id',
+            in: 'path'
+          }
+        })
+    })
+  }
 }
