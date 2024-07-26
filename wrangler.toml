@@ -1,12 +1,15 @@
 name = "discord_stripe_store"
 compatibility_date = "2024-07-22"
 send_metrics = true
+kv_namespaces = [
+  { binding = "STRIPE_DISCORD_STORE_USERS", id = "d466eec431ec410f9450a4a68daa944f" },
+  { binding = "STRIPE_DISCORD_STORE_SUBSCRIPTIONS", id = "cfc8234c4c5a4a348ad843b15b79cb4a" },
+]
 
 [[env.production]]
 account_id = { env = "CLOUDFLARE_ACCOUNT_ID" }
 workers_dev = false
 compatibility_date = "2024-07-22"
-route = "yourdomain.com/*"
 
 [[env.development]]
 account_id = { env = "CLOUDFLARE_ACCOUNT_ID" }
