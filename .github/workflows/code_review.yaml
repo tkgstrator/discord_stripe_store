@@ -1,8 +1,10 @@
 name: Pull request code review by ChatGPT
 on:
   pull_request:
-    types: [opened, reopened, ready_for_review]
+    types: [opened, reopened, ready_for_review, synchronize]
   issue_comment:
+    types: [created, edited]
+  workflow_dispatch:
 jobs:
   pr_agent_job:
     name: Code review
@@ -17,12 +19,13 @@ jobs:
         id: pragent
         uses: Codium-ai/pr-agent@main
         env:
-          OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_ACTION.AUTO_REVIEW: true
+          CONFIG.MODEL: gpt-4o-mini
           GITHUB_ACTION.AUTO_DESCRIBE: true
           GITHUB_ACTION.AUTO_IMPROVE: true
-          PR_REVIEWER.EXTRA_INSTRUCTIONS: 'Please use Japanese in descriptions.'
-          PR_DESCRIPTION.EXTRA_INSTRUCTIONS: 'Please use Japanese in descriptions. Titles should have prefix of commitlint pattern such as `feat:`, `fix:`, `perf:`, `refactor:`, `test:`, `chore:`, `ci:`, `docs:` etc'
+          GITHUB_ACTION.AUTO_REVIEW: true
+          GITHUB_ACTION.PR_DESCRIPTION.USE_DESCRIPTION_MARKERS: true
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
+          PR_DESCRIPTION.EXTRA_INSTRUCTIONS: Please use Japanese in descriptions. Titles should have prefix of commitlint pattern such as `feat:`, `fix:`, `perf:`, `refactor:`, `test:`, `chore:`, `ci:`, `docs:` etc
           PR_DESCRIPTION.USE_DESCRIPTION_MARKERS: true
-          CONFIG.MODEL: gpt-4o-mini
+          PR_REVIEWER.EXTRA_INSTRUCTIONS: Please use Japanese in descriptions.
