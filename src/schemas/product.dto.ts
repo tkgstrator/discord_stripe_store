@@ -4,7 +4,7 @@ export namespace Product {
   export const Param = z.object({
     limit: z
       .string()
-      .pipe(z.coerce.number().int().gt(0).default(100))
+      .pipe(z.coerce.number().int().gt(0).lte(100).default(100))
       .optional()
       .openapi({
         type: 'integer',
