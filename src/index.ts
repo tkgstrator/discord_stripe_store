@@ -3,6 +3,7 @@ import { apiReference } from '@scalar/hono-api-reference'
 import { csrf } from 'hono/csrf'
 import { logger } from 'hono/logger'
 import info from '../package.json'
+import { app as products } from './products'
 import { app as users } from './users'
 
 const app = new Hono()
@@ -24,9 +25,26 @@ app.get(
   apiReference({
     spec: {
       url: '/specification'
-    }
+    },
+    defaultHttpClient: {
+      targetKey: 'node',
+      clientKey: 'axios'
+    },
+    layout: 'modern',
+    hideDownloadButton: true,
+    darkMode: true,
+    metaData: {
+      title: info.name
+    },
+    theme: 'bluePlanet',
+    defaultOpenAllTags: false,
+    tagsSorter: 'alpha'
   })
 )
 app.route('/users', users)
+app.route('/products', products)
 
-export default app
+export default {
+  port: 3000,
+  fetch: app.fetch
+}
