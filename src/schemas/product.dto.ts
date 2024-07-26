@@ -1,6 +1,4 @@
 import { z } from '@hono/zod-openapi'
-import { startTime } from 'hono/timing'
-import Stripe from 'stripe'
 
 export namespace Product {
   export const Param = z.object({
@@ -95,14 +93,8 @@ export namespace Product {
       active: z.boolean().openapi({
         example: true
       }),
-      created: z.string().datetime({}).openapi({
-        example: '2024-01-01T00:00:00.000Z'
-      }),
       livemode: z.boolean().openapi({
         example: true
-      }),
-      updated: z.string().datetime({}).openapi({
-        example: '2024-01-01T00:00:00.000Z'
       })
     })
     .openapi('Product')
