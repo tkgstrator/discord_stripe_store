@@ -55,4 +55,5 @@ export namespace Subscription {
         })
     })
     .openapi('Subscription')
+  export type Data = z.infer<typeof Subscription.Data>
 }

@@ -48,4 +48,7 @@ export namespace User {
         })
     })
   }
+
+  export type Data = z.infer<typeof User.Data>
+  export type Param = z.infer<typeof User.Param>
 }
