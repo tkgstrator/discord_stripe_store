@@ -2,6 +2,7 @@ import { HTTPMethod } from '@/enums/method'
 import { Product } from '@/schemas/product.dto'
 import type { Bindings } from '@/utils/bindings'
 import { OpenAPIHono as Hono, createRoute, z } from '@hono/zod-openapi'
+import { cache } from 'hono/cache'
 import Stripe from 'stripe'
 
 export const app = new Hono<{ Bindings: Bindings }>()
@@ -17,6 +18,12 @@ app.openapi(
     request: {
       query: Product.Param
     },
+    middleware: [
+      cache({
+        cacheName: 'products',
+        cacheControl: 'max-age=3600'
+      })
+    ],
     responses: {
       200: {
         content: {

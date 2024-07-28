@@ -25,16 +25,11 @@ app.openapi(
     }
   }),
   async (c) => {
-    return c.json(
-      [
-        {
-          discord_user_id: '430364540899819520',
-          customer_id: null,
-          subscription: null
-        }
-      ],
-      200
+    const keys: string[] = (await c.env.STRIPE_DISCORD_STORE_USERS.list({ limit: 20 })).keys.map((key) => key.name)
+    const users = (await Promise.all(keys.map(async (key) => c.env.STRIPE_DISCORD_STORE_USERS.get(key, { type: 'json' })))).map((user) =>
+      User.Data.parse(user)
     )
+    return c.json(users, 200)
   }
 )
 app.openapi(
@@ -62,14 +57,8 @@ app.openapi(
   }),
   async (c) => {
     const param = c.req.valid('param')
-    return c.json(
-      {
-        discord_user_id: param.id.toString(),
-        customer_id: null,
-        subscription: null
-      },
-      200
-    )
+    const user = User.Data.parse(await c.env.STRIPE_DISCORD_STORE_USERS.get(param.id.toString(), { type: 'json' }))
+    return c.json(user, 200)
   }
 )
 app.openapi(
@@ -104,14 +93,13 @@ app.openapi(
   }),
   async (c) => {
     const body = c.req.valid('json')
-    return c.json(
-      {
-        discord_user_id: body.id.toString(),
-        customer_id: null,
-        subscription: null
-      },
-      201
-    )
+    const user = User.Data.parse({
+      discord_user_id: body.id.toString(),
+      customer_id: null,
+      subscription: null
+    })
+    c.executionCtx.waitUntil(c.env.STRIPE_DISCORD_STORE_USERS.put(user.discord_user_id, JSON.stringify(user)))
+    return c.json(user, 201)
   }
 )
 app.openapi(
