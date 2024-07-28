@@ -23,11 +23,13 @@ export namespace User {
         type: 'string',
         example: '383683302801932289'
       }),
-      customer_id: z.nullable(
-        z.string().startsWith('cus_').openapi({
-          example: 'cus_QW9bgkXAg0iv50'
-        })
-      ),
+      customer_id: z
+        .nullable(
+          z.string().startsWith('cus_').openapi({
+            example: 'cus_QW9bgkXAg0iv50'
+          })
+        )
+        .default(null),
       subscription: z.nullable(z.array(Subscription.Data).nonempty())
     })
     .openapi('User')
