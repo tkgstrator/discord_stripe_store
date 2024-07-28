@@ -1,4 +1,5 @@
 export enum Mode {
   SUBSCRIPTION = 'subscription',
-  PAYMENT = 'payment'
+  PAYMENT = 'payment',
+  SETUP = 'setup'
 }

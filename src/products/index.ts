@@ -35,7 +35,9 @@ app.openapi(
       apiVersion: '2024-06-20',
       typescript: true
     })
-    const products = (await stripe.products.list({ limit: param.limit, active: true })).data.map((product) => Product.Data.parse(product))
+    const list = await stripe.products.list({ limit: param.limit, active: true })
+    // console.log(JSON.stringify(list, null, 2))
+    const products = list.data.map((product) => Product.Data.parse(product))
     return c.json(products, 200)
   }
 )

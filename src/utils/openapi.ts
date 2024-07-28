@@ -15,7 +15,7 @@ export const reference: ApiReferenceOptions = {
   metaData: {
     title: info.name
   },
-  theme: 'bluePlanet',
+  theme: 'default',
   defaultOpenAllTags: false,
   tagsSorter: 'alpha'
 }

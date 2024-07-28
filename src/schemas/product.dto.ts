@@ -1,4 +1,5 @@
 import { z } from '@hono/zod-openapi'
+import { Common } from './metadata.dto'
 
 export namespace Product {
   export const Param = z.object({
@@ -95,7 +96,27 @@ export namespace Product {
       }),
       livemode: z.boolean().openapi({
         example: true
-      })
+      }),
+      metadata: z
+        .record(z.union([z.string(), z.number()]))
+        .transform((data) => {
+          if (data === null) {
+            return null
+          }
+          const entries = Object.entries(data).map(([key, value]) => {
+            if (Number.isNaN(Number(value))) {
+              return { [key]: value }
+            }
+            return { [key]: Number(value) }
+          })
+          console.log(Object.assign({}, ...entries))
+          return Object.assign({}, ...entries)
+        })
+        .openapi({
+          example: {},
+          description:
+            'Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.'
+        })
     })
     .openapi('Product')
 }

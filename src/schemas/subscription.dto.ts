@@ -1,4 +1,5 @@
 import { z } from '@hono/zod-openapi'
+import { Common } from './metadata.dto'
 
 export namespace Plan {
   export const Data = z
@@ -52,7 +53,8 @@ export namespace Subscription {
               }
             }
           ]
-        })
+        }),
+      metadata: Common.Metadata
     })
     .openapi('Subscription')
   export type Data = z.infer<typeof Subscription.Data>
