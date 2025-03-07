@@ -1,0 +1,37 @@
+{
+  "name": "discord_stripe_store",
+  "author": "tkgstrator",
+  "license": "MIT",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "wrangler dev src/index.ts",
+    "deploy": "wrangler deploy --minify src/index.ts",
+    "prepare": "husky",
+    "lint": "bunx @biomejs/biome lint --write src",
+    "format": "bunx @biomejs/biome format --write src",
+    "check": "bunx @biomejs/biome check --write src"
+  },
+  "config": {
+    "commitizen": {
+      "path": "@commitlint/cz-commitlint"
+    }
+  },
+  "dependencies": {
+    "@hono/zod-openapi": "^0.15.1",
+    "@scalar/hono-api-reference": "^0.5.118",
+    "dayjs": "^1.11.12",
+    "hono": "^4.5.1",
+    "stripe": "^16.2.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.8.3",
+    "@cloudflare/workers-types": "^4.20240722.0",
+    "@commitlint/cli": "19.3.0",
+    "@commitlint/config-conventional": "19.2.2",
+    "@commitlint/cz-commitlint": "19.2.0",
+    "commitlint": "^19.3.0",
+    "husky": "^9.1.1",
+    "wrangler": "3.18.0"
+  }
+}
