@@ -6,10 +6,13 @@ rules:
     - 2
     - always
     - - lower-case
-      - sentence-case
-      - pascal-case
-      - start-case
       - upper-case
+      - camel-case
+      # - kebab-case
+      - pascal-case
+      - sentence-case
+      # - snake-case
+      - start-case
   header-max-length:
     - 2
     - always
