@@ -3,6 +3,7 @@ import { Mode } from '@/enums/mode'
 import { User } from '@/schemas/users.dto'
 import type { Bindings } from '@/utils/bindings'
 import { OpenAPIHono as Hono, createRoute, z } from '@hono/zod-openapi'
+import { HTTPException } from 'hono/http-exception'
 import Stripe from 'stripe'
 
 export const app = new Hono<{ Bindings: Bindings }>()
@@ -173,6 +174,12 @@ app.openapi(
       success_url: `${base_url}/success`,
       cancel_url: `${base_url}/cancel`
     })
+    if (sessions.url === null) {
+      throw new HTTPException(400, { message: 'Failed to create a session' })
+    }
+    if (new URL(c.req.url).hostname === 'localhost') {
+      return c.redirect(new URL(sessions.url), 301)
+    }
     return c.json(sessions, 200)
   }
 )

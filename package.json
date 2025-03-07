@@ -4,7 +4,7 @@
   "license": "MIT",
   "version": "1.0.0",
   "scripts": {
-    "dev": "wrangler dev src/index.ts",
+    "dev": "wrangler dev src/index.ts --env dev",
     "deploy": "wrangler deploy --minify src/index.ts --env dev",
     "prepare": "husky",
     "lint": "bunx @biomejs/biome lint --write src",
