@@ -5,7 +5,7 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "wrangler dev src/index.ts",
-    "deploy": "wrangler deploy --minify src/index.ts",
+    "deploy": "wrangler deploy --minify src/index.ts --env dev",
     "prepare": "husky",
     "lint": "bunx @biomejs/biome lint --write src",
     "format": "bunx @biomejs/biome format --write src",
