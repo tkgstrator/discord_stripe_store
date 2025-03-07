@@ -197,6 +197,7 @@ dist
 # .tfstate files
 *.tfstate
 *.tfstate.*
+terraform.tfvars
 
 # Crash log files
 crash.log
