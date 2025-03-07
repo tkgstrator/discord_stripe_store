@@ -32,6 +32,7 @@ app.openapi(
     return c.json(users, 200)
   }
 )
+
 app.openapi(
   createRoute({
     method: HTTPMethod.GET,
@@ -102,15 +103,41 @@ app.openapi(
     return c.json(user, 201)
   }
 )
+
 app.openapi(
   createRoute({
     method: HTTPMethod.GET,
-    path: '/{id}/checkout',
+    path: '/{id}/checkout/{product_id}',
     tags: ['Users'],
     summary: 'Create a session',
     description: 'Create a session for a user to checkout',
     request: {
-      params: User.Checkout.Param
+      params: z.object({
+        id: z
+          .string()
+          .pipe(z.coerce.bigint().positive())
+          .openapi({
+            type: 'integer',
+            example: '383683302801932289',
+            description: 'Discord user Id',
+            param: {
+              name: 'id',
+              in: 'path'
+            }
+          }),
+        product_id: z.string().openapi({
+          type: 'string',
+          example: 'prod_RIJlRHz1yIE73x',
+          description: 'Product Id',
+          param: {
+            name: 'product_id',
+            in: 'path'
+          }
+        })
+      }),
+      query: z.object({
+        mode: z.enum(['payment', 'subscription']).default('subscription')
+      })
     },
     responses: {
       200: {
@@ -132,24 +159,20 @@ app.openapi(
       apiVersion: '2025-02-24.acacia',
       typescript: true
     })
-    const products = await stripe.products.list({ limit: 100, active: true })
+    // セール時の価格などもいろいろはいってくる
+    const prices = await stripe.prices.list({ product: param.product_id })
+    const base_url: string = `${new URL(c.req.url).protocol}//${new URL(c.req.url).host}`
     const sessions = await stripe.checkout.sessions.create({
       line_items: [
         {
-          price: products.data[0].id,
+          price: prices.data[0].id,
           quantity: 1
         }
       ],
-      client_reference_id: param.id.toString(),
-      mode: Mode.SUBSCRIPTION
+      mode: Mode.SUBSCRIPTION,
+      success_url: `${base_url}/success`,
+      cancel_url: `${base_url}/cancel`
     })
-    return c.json(
-      {
-        discord_user_id: '430364540899819520',
-        customer_id: null,
-        subscription: null
-      },
-      200
-    )
+    return c.json(sessions, 200)
   }
 )

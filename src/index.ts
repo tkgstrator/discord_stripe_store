@@ -15,6 +15,7 @@ import { timeout } from 'hono/timeout'
 import { ZodError } from 'zod'
 import { app as products } from './api/products'
 import { app as users } from './api/users'
+import { app as webhook } from './api/webhook'
 import type { Bindings } from './utils/bindings'
 import { scheduled } from './utils/handler'
 import { reference, specification } from './utils/openapi'
@@ -75,6 +76,7 @@ app.onError(async (error, c) => {
 })
 app.route('/users', users)
 app.route('/products', products)
+app.route('/webhook', webhook)
 
 export default {
   fetch: app.fetch,
