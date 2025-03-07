@@ -5,13 +5,22 @@ rules:
   subject-case:
     - 2
     - always
-    - - sentence-case
+    - - lower-case
+      - sentence-case
       - pascal-case
-      - lower-case
+      - start-case
   header-max-length:
     - 2
     - always
     - 72
+  scope-case:
+    - 2
+    - always
+    - - lower-case
+  scope-max-length:
+    - 2
+    - always
+    - 16
   type-enum:
     - 2
     - always
