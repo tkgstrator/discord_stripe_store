@@ -13,8 +13,8 @@ import { HTTPException } from 'hono/http-exception'
 import { logger } from 'hono/logger'
 import { timeout } from 'hono/timeout'
 import { ZodError } from 'zod'
-import { app as products } from './products'
-import { app as users } from './users'
+import { app as products } from './api/products'
+import { app as users } from './api/users'
 import type { Bindings } from './utils/bindings'
 import { scheduled } from './utils/handler'
 import { reference, specification } from './utils/openapi'
@@ -24,7 +24,7 @@ dayjs.extend(timezone)
 dayjs.extend(customParseFormat)
 dayjs.tz.setDefault('Asia/Tokyo')
 
-const app = new Hono()
+const app = new Hono<{ Bindings: Bindings }>()
 
 app.openAPIRegistry.registerComponent('securitySchemes', 'Bearer', {
   type: 'http',
@@ -33,6 +33,10 @@ app.openAPIRegistry.registerComponent('securitySchemes', 'Bearer', {
   description: 'Bearer Token'
 })
 
+app.use('*', async (c: Context, next: Next) => {
+  c.env = { ...process.env, ...c.env }
+  await next()
+})
 app.use('*', timeout(5000))
 app.use(logger())
 app.use(compress({ encoding: 'deflate' }))

@@ -129,7 +129,7 @@ app.openapi(
   async (c) => {
     const param = c.req.valid('param')
     const stripe = new Stripe(c.env.STRIPE_SECRET_KEY, {
-      apiVersion: '2024-06-20',
+      apiVersion: '2025-02-24.acacia',
       typescript: true
     })
     const products = await stripe.products.list({ limit: 100, active: true })
