@@ -1,7 +1,8 @@
 import info from '@/../package.json'
-import type { ApiReferenceOptions } from '@scalar/hono-api-reference'
+import { apiReference } from '@scalar/hono-api-reference'
+import type { Env, MiddlewareHandler } from 'hono'
 
-export const reference: ApiReferenceOptions = {
+export const reference: MiddlewareHandler<Env> = apiReference({
   spec: {
     url: '/specification'
   },
@@ -15,10 +16,10 @@ export const reference: ApiReferenceOptions = {
   metaData: {
     title: info.name
   },
-  theme: 'bluePlanet',
+  theme: 'default',
   defaultOpenAllTags: false,
   tagsSorter: 'alpha'
-}
+})
 
 export const specification = {
   openapi: '3.0.0',

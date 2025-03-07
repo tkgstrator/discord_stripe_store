@@ -4,9 +4,74 @@
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["driverAdapters"]
+  binaryTargets   = ["native"]
+}
+
+// generator erd {
+//   provider  = "prisma-erd-generator"
+//   tableOnly = true
+// }
+
+generator type {
+  provider                         = "zod-prisma-types"
+  output                           = "../src/prisma"
+  useMultipleFiles                 = true
+  writeBarrelFiles                 = true
+  createInputTypes                 = false
+  createModelTypes                 = true
+  addInputTypeValidation           = true
+  createOptionalDefaultValuesTypes = false
+  createRelationValuesTypes        = true
+  createPartialTypes               = false
+  useDefaultValidators             = true
+}
+
+// generator zod {
+//   provider = "prisma-zod-generator"
+// }
+
+generator docs {
+  provider              = "node node_modules/prisma-docs-generator"
+  includeRelationFields = false
+  output                = "../public/schema"
 }
 
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
+}
+
+model Checkout {
+  id        String   @id
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+}
+
+model Plan {
+  id        String   @id
+  product   String
+  active    Boolean
+  amount    Int
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  Item      Item[]
+}
+
+model Item {
+  id             String        @id
+  plan           Plan          @relation(fields: [planId], references: [id])
+  createdAt      DateTime      @default(now()) @map("created_at")
+  updatedAt      DateTime      @updatedAt @map("updated_at")
+  planId         String
+  Subscription   Subscription? @relation(fields: [subscriptionId], references: [id])
+  subscriptionId String?
+}
+
+model Subscription {
+  id                 String   @id
+  currentPeriodEnd   DateTime
+  currentPeriodStart DateTime
+  items              Item[]
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
 }

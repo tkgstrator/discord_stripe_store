@@ -1,6 +1,4 @@
 import { z } from '@hono/zod-openapi'
-import { startTime } from 'hono/timing'
-import Stripe from 'stripe'
 
 export namespace Checkout {
   export const Param = z.object({
