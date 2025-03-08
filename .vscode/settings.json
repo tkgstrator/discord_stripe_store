@@ -1,4 +1,3 @@
 {
-  "gitdoc.enabled": true,
-  "gitdoc.filePattern": "**/*.ts"
+  "gitdoc.enabled": true
 }
