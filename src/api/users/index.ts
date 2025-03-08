@@ -59,10 +59,10 @@ app.openapi(
   }),
   async (c) => {
     const param = c.req.valid('param')
-    const user = User.Data.parse(await c.env.STRIPE_DISCORD_STORE_USERS.get(param.id.toString(), { type: 'json' }))
-    return c.json(user, 200)
+    return c.json(await c.env.prisma.get(param.id))
   }
 )
+
 app.openapi(
   createRoute({
     method: HTTPMethod.POST,

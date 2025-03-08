@@ -17,6 +17,7 @@ import { app as products } from './api/products'
 import { app as users } from './api/users'
 import { app as webhook } from './api/webhook'
 import type { Bindings } from './utils/bindings'
+import Prisma from './utils/db'
 import { scheduled } from './utils/handler'
 import { reference, specification } from './utils/openapi'
 
@@ -36,6 +37,10 @@ app.openAPIRegistry.registerComponent('securitySchemes', 'Bearer', {
 
 app.use('*', async (c: Context, next: Next) => {
   c.env = { ...process.env, ...c.env }
+  if (!c.env.prisma) {
+    console.info('Initializing Prisma')
+    c.env.prisma = new Prisma(c.env)
+  }
   await next()
 })
 app.use('*', timeout(5000))

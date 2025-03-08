@@ -18,7 +18,7 @@ r2_buckets = [
 ]
 
 d1_databases = [
-  { binding = "DB", database_name = "discord-stripe-database-dev", database_id = "babd696f-8e17-4611-a777-d6e9eff4561e" },
+  { binding = "DB", database_name = "discord-stripe-database-dev", database_id = "babd696f-8e17-4611-a777-d6e9eff4561e", migrations_dir = "prisma/migrations" },
 ]
 
 # [env.prod]

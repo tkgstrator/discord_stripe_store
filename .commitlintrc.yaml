@@ -16,7 +16,7 @@ rules:
   header-max-length:
     - 2
     - always
-    - 72
+    - 96
   scope-case:
     - 2
     - always
