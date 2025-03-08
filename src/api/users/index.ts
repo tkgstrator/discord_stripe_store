@@ -25,12 +25,9 @@ app.openapi(
       }
     }
   }),
+  // @ts-ignore
   async (c) => {
-    const keys: string[] = (await c.env.STRIPE_DISCORD_STORE_USERS.list({ limit: 20 })).keys.map((key) => key.name)
-    const users = (await Promise.all(keys.map(async (key) => c.env.STRIPE_DISCORD_STORE_USERS.get(key, { type: 'json' })))).map((user) =>
-      User.Data.parse(user)
-    )
-    return c.json(users, 200)
+    return c.json(await c.env.prisma.get_all())
   }
 )
 
@@ -95,13 +92,7 @@ app.openapi(
   }),
   async (c) => {
     const body = c.req.valid('json')
-    const user = User.Data.parse({
-      discord_user_id: body.id.toString(),
-      customer_id: null,
-      subscription: null
-    })
-    c.executionCtx.waitUntil(c.env.STRIPE_DISCORD_STORE_USERS.put(user.discord_user_id, JSON.stringify(user)))
-    return c.json(user, 201)
+    return c.json(await c.env.prisma.create(body.id), 201)
   }
 )
 

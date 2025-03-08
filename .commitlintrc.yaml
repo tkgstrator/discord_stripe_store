@@ -8,10 +8,10 @@ rules:
     - - lower-case
       - upper-case
       - camel-case
-      # - kebab-case
+      - kebab-case
       - pascal-case
       - sentence-case
-      # - snake-case
+      - snake-case
       - start-case
   header-max-length:
     - 2

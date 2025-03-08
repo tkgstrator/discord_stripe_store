@@ -1,5 +1,6 @@
 import { PrismaD1 } from '@prisma/adapter-d1'
 import { PrismaClient, type User } from '@prisma/client'
+import { HTTPException } from 'hono/http-exception'
 import type { Bindings } from './bindings'
 
 class Prisma {
@@ -12,7 +13,11 @@ class Prisma {
   }
 
   get = async (discord_user_id: bigint): Promise<User> => {
-    return await this.prisma.user.findUniqueOrThrow({ where: { id: discord_user_id.toLocaleString() } })
+    try {
+      return await this.prisma.user.findUniqueOrThrow({ where: { id: discord_user_id.toString() } })
+    } catch (e) {
+      throw new HTTPException(404, { message: 'Not found' })
+    }
   }
 
   get_all = async (): Promise<User[]> => {
@@ -20,11 +25,15 @@ class Prisma {
   }
 
   create = async (discord_user_id: bigint): Promise<User> => {
-    return await this.prisma.user.create({ data: { id: discord_user_id.toLocaleString() } })
+    try {
+      return await this.prisma.user.create({ data: { id: discord_user_id.toString() } })
+    } catch (e) {
+      throw new HTTPException(409, { message: 'Conflict' })
+    }
   }
 
   delete = async (discord_user_id: bigint): Promise<User> => {
-    return await this.prisma.user.delete({ where: { id: discord_user_id.toLocaleString() } })
+    return await this.prisma.user.delete({ where: { id: discord_user_id.toString() } })
   }
 }
 
