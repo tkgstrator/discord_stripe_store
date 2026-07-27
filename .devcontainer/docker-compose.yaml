@@ -10,7 +10,22 @@ services:
     stdin_open: true
 
   stripe-cli:
-    image: stripe/stripe-cli:latest
+    image: stripe/stripe-cli:v1.25.0
+    command: -c "
+      echo 'STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}' > /app/env/.dev.vars &&
+      stripe listen --api-key ${STRIPE_SECRET_KEY} --forward-to http://host.docker.internal:8787/webhook --format JSON 2>&1 \
+      | tee /app/logs/stripe.log \
+      | grep -oE 'whsec_[a-zA-Z0-9]+' \
+      | head -n 1 \
+      | sed 's/^/STRIPE_WEBHOOK_SECRET=/' >> /app/env/.dev.vars
+      "
+    entrypoint:
+      - sh
+    environment:
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+    volumes:
+      - ../.dev.vars:/app/env/.dev.vars
+      - ../logs:/app/logs
 
   stripe-mock:
     image: stripe/stripe-mock:latest

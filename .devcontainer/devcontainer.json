@@ -36,6 +36,7 @@
         "HashiCorp.terraform",
         "Lokalise.i18n-ally",
         "PKief.material-icon-theme",
+        "Prisma.prisma",
         "Stripe.vscode-stripe",
         "antfu.file-nesting",
         "bierner.github-markdown-preview",
@@ -45,6 +46,7 @@
         "bradlc.vscode-tailwindcss",
         "eamodio.gitlens",
         "ms-vscode.vscode-typescript-next",
+        "qwtel.sqlite-viewer",
         "redhat.vscode-yaml",
         "tamasfe.even-better-toml",
         "vsls-contrib.gitdoc"
